@@ -14,6 +14,9 @@ function ProfileSidebar(props){
 export default function Home() {
  const gitHubUser = "yurimarcon"
  const pessoasFavoritas = [
+  "PedroMagar",
+  "renanmg",
+  "	AlineSoares",
   "juunegreiros",
   "omariosouto",
   "peas"
@@ -39,7 +42,7 @@ export default function Home() {
       <div className="profileRelationsArea" style={{ gridArea: 'profileRelationsArea'}}>
         <ProfileRelationsBoxWrapper >
           <h2 className="smallTitle">
-            Comunidades ({pessoasFavoritas.length})
+            Amigos(as) ({pessoasFavoritas.length})
           </h2>
           <ul>
             {pessoasFavoritas.map((itemAtual)=>{
@@ -57,9 +60,6 @@ export default function Home() {
             }
           </ul>
         </ProfileRelationsBoxWrapper>
-        <Box >
-          Amigos(as)
-        </Box>
       </div>
       </MainGrid>
     </>
