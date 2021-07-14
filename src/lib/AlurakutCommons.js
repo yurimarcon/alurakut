@@ -143,7 +143,7 @@ AlurakutMenu.Wrapper = styled.header`
     input {
       color: #ffffff;
       /* background: #5579A1; */
-      background: #708090;
+      background: #2B2A2A;
       padding: 10px 42px;
       border: 0;
       background-image: url(${`${BASE_URL}/icons/search.svg`});
