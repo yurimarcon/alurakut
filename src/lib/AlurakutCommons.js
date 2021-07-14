@@ -5,7 +5,6 @@ import NextLink from 'next/link';
 const BASE_URL = 'http://alurakut.vercel.app/';
 const v = '1';
 
-
 function Link({ href, children, ...props }) {
   return (
     <NextLink href={href} passHref>
@@ -20,6 +19,7 @@ function Link({ href, children, ...props }) {
 // Menu
 // ================================================================================================================
 export function AlurakutMenu({ githubUser }) {
+
   const [isMenuOpen, setMenuState] = React.useState(false);
   return (
     <AlurakutMenu.Wrapper isMenuOpen={isMenuOpen}>
@@ -54,7 +54,8 @@ export function AlurakutMenu({ githubUser }) {
 }
 AlurakutMenu.Wrapper = styled.header`
   width: 100%;
-  background-color: #308BC5;
+  /* background-color: #308BC5; */
+  background-color: #363636;
   .alurakutMenuProfileSidebar {
     background: white;
     position: fixed;
@@ -93,7 +94,7 @@ AlurakutMenu.Wrapper = styled.header`
     }
   }
   .container {
-    background-color: #308BC5;
+    /* background-color: #308BC5; */
     padding: 7px 16px;
     max-width: 1110px;
     margin: auto;
@@ -126,7 +127,8 @@ AlurakutMenu.Wrapper = styled.header`
         text-decoration: none;
         &:after {
           content: " ";
-          background-color: #5292C1;
+          /* background-color: #5292C1; */
+          background-color: #ffffff;
           display: block;
           position: absolute;
           width: 1px;
@@ -140,7 +142,8 @@ AlurakutMenu.Wrapper = styled.header`
     }
     input {
       color: #ffffff;
-      background: #5579A1;
+      /* background: #5579A1; */
+      background: #708090;
       padding: 10px 42px;
       border: 0;
       background-image: url(${`${BASE_URL}/icons/search.svg`});
@@ -213,8 +216,9 @@ export function AlurakutProfileSidebarMenuDefault() {
           </a>
         <a href="/logout">
           <img src={`${BASE_URL}//icons/logout.svg`} />
-            Sair
-          </a>
+          Sair
+        </a>
+        
       </nav>
     </AlurakutProfileSidebarMenuDefault.Wrapper>
   )
