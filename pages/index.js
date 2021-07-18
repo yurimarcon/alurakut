@@ -1,4 +1,6 @@
 import React from 'react'
+import nookies from 'nookies'
+import jwt from 'jsonwebtoken'
 import MainGrid from '../src/components/MainGrid'
 import Box from '../src/components/Box'
 import { AlurakutMenu, OrkutNostalgicIconSet, AlurakutProfileSidebarMenuDefault } from '../src/lib/AlurakutCommons'
@@ -29,32 +31,33 @@ function ProfileRelationBox(props){
       Seguidores(as) ({props.seguidores.length})
     </h2>
     <ul>
-      {props.seguidores.map((itemAtual, index)=>{
-        return(
-          <li key={index}>
-            <a href={`https://github.com/${itemAtual.login}`}>
-              <img src={`https://github.com/${itemAtual.login}.png`}></img>
-              <span>{itemAtual.login}</span>
-            </a>
-          </li>
+      {props.seguidores[0] ? props.seguidores.map((itemAtual, index)=>{
+        if(index < 6){
+          return(
+            <li key={index}>
+              <a href={`https://github.com/${itemAtual.login}`}>
+                <img src={`https://github.com/${itemAtual.login}.png`}></img>
+                <span>{itemAtual.login}</span>
+              </a>
+            </li>
+          )
+        }
 
-        )
-
-      })
+      }) : 0 
       }
     </ul>
   </ProfileRelationsBoxWrapper>
   )
 }
 
-export default function Home() {
+export default function Home(props) {
 
 const [comunidades, setComunidades] = React.useState([]);
-const gitHubUser = "yurimarcon"
+const gitHubUser = props.githubUser;
 const pessoasFavoritas = [
   "PedroMagar",
   "renanmg",
-  "	AlineSoares",
+  "AlineSoares",
   "juunegreiros",
   "omariosouto",
   "peas"
@@ -63,7 +66,7 @@ const [seguidores, setSeguidores] = React.useState([]);
 // 0 - Pegar o array de dados do github 
   React.useEffect(function() {
     // GET
-    fetch('https://api.github.com/users/yurimarcon/followers')
+    fetch(`https://api.github.com/users/${gitHubUser}/followers`)
     .then(function (respostaDoServidor) {
       return respostaDoServidor.json();
     })
@@ -195,16 +198,18 @@ const [seguidores, setSeguidores] = React.useState([]);
               Comunidades ({comunidades.length})
             </h2>
             <ul>
-              {comunidades.map((itemAtual)=>{
-                return(
-                  <li key={itemAtual.id}>
-                    <a href="#">
-                      <img src={itemAtual.imageUrl}></img>
-                      <span>{itemAtual.title}</span>
-                    </a>
-                  </li>
+              {comunidades.map((itemAtual, index)=>{
+                if(index < 6){
+                  return(
+                    <li key={itemAtual.id}>
+                      <a href="#">
+                        <img src={itemAtual.imageUrl}></img>
+                        <span>{itemAtual.title}</span>
+                      </a>
+                    </li>
 
-                )
+                  )
+                }
               })
               }
             </ul>
@@ -216,15 +221,17 @@ const [seguidores, setSeguidores] = React.useState([]);
             </h2>
             <ul>
               {pessoasFavoritas.map((itemAtual, index)=>{
-                return(
-                  <li key={index}>
-                    <a href={`https://github.com/${itemAtual}`}>
-                      <img src={`https://github.com/${itemAtual}.png`}></img>
-                      <span>{itemAtual}</span>
-                    </a>
-                  </li>
+                if(index < 6){
+                  return(
+                    <li key={index}>
+                      <a href={`https://github.com/${itemAtual}`}>
+                        <img src={`https://github.com/${itemAtual}.png`}></img>
+                        <span>{itemAtual}</span>
+                      </a>
+                    </li>
 
-                )
+                  )
+                }
 
               })
               }
@@ -234,4 +241,34 @@ const [seguidores, setSeguidores] = React.useState([]);
       </MainGrid>
     </>
   )
+}
+
+export async function getServerSideProps(ctx){
+  const cookies = nookies.get(ctx);
+  const token = cookies.USER_TOKEN;
+  const { isAuthenticated } = await fetch('https://alurakut.vercel.app/api/auth', {
+    headers: {
+        Authorization: token
+      }
+  })
+  .then((resposta) => resposta.json())
+
+  console.log(isAuthenticated)
+
+  if(!isAuthenticated) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      }
+    }
+  }
+
+  const { githubUser } = jwt.decode(token);
+
+  return{
+    props:{
+      githubUser
+    }
+  }
 }
